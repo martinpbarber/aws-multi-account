@@ -40,7 +40,7 @@ OU structure is highly subjective, I'm sure mine won't be right for you. I also 
 What is notably missing from my OU structure is sandbox accounts. These will likely be used by most organizations. I think it's a good idea to isolate (limit communication through peering, transit routing) these accounts from your other accounts so that a disaster does not impact your primary accounts (dev, test, prod). It may be possible to relax the IAM policies in sandbox accounts to allow more freedom for experimentation. Of course relaxed means different things to different organizations.
 
 ### Deployed Services
-I try to keep the number of resources limited in this account. The only resource currently deployed in this account is an IAM role that my [Management Account](#services-account) can assume to use the AWS Organizations API. The implementation for that role can be found in the [AWS Roles]() repository.
+I try to keep the number of resources limited in this account. The only resource currently deployed in this account is an IAM role that my [Management Account](#management-account) can assume to use the AWS Organizations API. The implementation for that role can be found in the [AWS Roles]() repository.
 
 ## Logging Account
 This account is used to collect CloudTrail and Config logs from all of the other accounts in the organization. I only perform central collection of the logs, using one bucket for CloudTrail and one bucket for Config. Currently, I don't have a log analysis system or perform any notifications based on log entries. I also don't centrally collect CloudWatch logs, but would do it here if I did.
