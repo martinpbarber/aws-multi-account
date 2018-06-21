@@ -45,9 +45,9 @@ I try to keep the number of resources limited in this account. The only resource
 ## Logging Account
 This account is used to collect CloudTrail and Config logs from all of the other accounts in the organization. I only perform central collection of the logs, using one bucket for CloudTrail and one bucket for Config. Currently, I don't have a log analysis system or perform any notifications based on log entries. I also don't centrally collect CloudWatch logs, but would do it here if I did.
 
-An organization may want to perform both central collection and local collection. This allows the accounts to see what is happening in their account without needing access to the central log  collection. The local log collection should be pruned more aggressively than the central collection. Personally, I would only collect centrally and provide a mechanism for review and analysis to users in an account.
+An organization may want to perform both central collection and local log collection. This allows users in an account to see what is happening in their account without needing access to the central log  collection. The local log collection should be pruned more aggressively than the central collection. Personally, I would only collect centrally and provide a mechanism for review and analysis to users in other accounts.
 
-I don't perform analysis of the logs in this account. Analysis tools gain access to the logs by a bucket policy and an appropriate notification mechanism (SNS/SQS/Lambda). The notification mechanism is generally tool dependent.
+If I added a log analysis service I would not field that solution in this account. I would deploy the analysis tool in another account and provide access to the logs via a bucket policy and an appropriate notification mechanism (SNS/SQS/Lambda). The notification mechanism will generally depend upon the tool.
 
 ### Deployed Services
 Central CloudTrail and Config buckets are deployed in this account as well as central SNS topics for each service. The CloudTrail implementation can be found [here](), the Config implementation is [here]().
