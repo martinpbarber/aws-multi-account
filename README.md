@@ -2,7 +2,7 @@
 
 This repository describes the high-level concepts that I use to manage my AWS accounts. The concepts are based on AWS guidelines and my own opinions about account separation and use.
 
-While I use this repository mainly to organize my thoughts, it also contains links to other repositories that with the real implementations I use to manage my accounts. Hopefully there's something here that's helpful to someone. Comments are always welcome.
+While I use this repository mainly to organize my thoughts, it also contains links to other repositories that contain implementations I use to manage my accounts. Hopefully there's something here that's helpful to someone. Comments are always welcome.
 
 There are a few design tenets I use to drive my AWS account management strategy.
 
@@ -14,19 +14,19 @@ There are a few design tenets I use to drive my AWS account management strategy.
 * AWS is not the end-all-be-all. Use what is appropriate, I use GitHub for code management.
 * AWS does keep getting better, expect your custom developed thing to turn into an AWS (or other provider) service. Move to the service when appropriate.
 
-## Multi-Account Architecture
+# Multi-Account Architecture
 In the last few years a lot has been written and presented on the topic of AWS multi-account strategies. Based on that information I organize my AWS accounts as follows.
 
-### Organizations Account
+## Organizations Account
 The account where I run AWS Organizations from. This account provides the following.
 
 * Centralized Billing
 * AWS Organizations API for account management
 * AWS Organizations Service Control Policies (SCP)
 
- While it's overkill for me an organization may decide to have multiple billing accounts, which means the management of accounts is spread across multiple AWS Organizations hierarchies.
+While it's overkill for me, an organization may decide to have multiple billing accounts. This means the management of accounts is spread across multiple AWS Organizations hierarchies.
 
-#### Organizational Unit Structure
+### Organizational Unit Structure
 I use organizational units to make decisions about what account infrastructure is deployed to each account. The hierarchy is described below.
 
 * root: AWS default root
@@ -37,10 +37,10 @@ I use organizational units to make decisions about what account infrastructure i
 
 OU structure is highly subjective, I'm sure mine won't be right for you. I also know that my structure will evolve over time.
 
-What is notably missing from my OU structure is sandbox accounts. These will likely be used by most organizations. I think it's a good idea to isolate (limit communication through peering, transit routing) these accounts from your other accounts so that a disaster does not impact your primary accounts (dev,test,prod). It may be possible to relax the IAM policies in these accounts to allow more freedom for experimentation. Of course relaxed means different things to different organizations.
+What is notably missing from my OU structure is sandbox accounts. These will likely be used by most organizations. I think it's a good idea to isolate (limit communication through peering, transit routing) these accounts from your other accounts so that a disaster does not impact your primary accounts (dev, test, prod). It may be possible to relax the IAM policies in sandbox accounts to allow more freedom for experimentation. Of course relaxed means different things to different organizations.
 
-#### Deployed Services
-I try to keep the number of resources limited in this account. The only resource currently deployed in this account is an IAM role that my [Management Account](#services-account) can assume to use  AWS Organizations API.
+### Deployed Services
+I try to keep the number of resources limited in this account. The only resource currently deployed in this account is an IAM role that my [Management Account](#services-account) can assume to use the AWS Organizations API. The implementation for that role can be found in the [AWS Roles]() repository.
 
 ## Logging Account
 This account is used to collect CloudTrail and Config logs from all of the other accounts in the organization. I only perform central collection of the logs, using one bucket for CloudTrail and one bucket for Config. Currently, I don't have a log analysis system or perform any notifications based on log entries. I also don't centrally collect CloudWatch logs, but would do it here if I did.
@@ -49,11 +49,8 @@ An organization may want to perform both central collection and local collection
 
 I don't perform analysis of the logs in this account. Analysis tools gain access to the logs by a bucket policy and an appropriate notification mechanism (SNS/SQS/Lambda). The notification mechanism is generally tool dependent.
 
-The implementation repositories are below.
-
-* [CloudTrail]()
-* [AWS Config]()
-* [AWS Config Rules]()
+### Deployed Services
+Central CloudTrail and Config buckets are deployed in this account as well as central SNS topics for each service. The CloudTrail implementation can be found [here](), the Config implementation is [here]().
 
 ## Management Account
 TBD
