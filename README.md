@@ -50,7 +50,7 @@ An organization may want to perform both central collection and local log collec
 If I added a log analysis service I would not field that solution in this account. I would deploy the analysis tool in another account and provide access to the logs via a bucket policy and an appropriate notification mechanism (SNS/SQS/Lambda). The notification mechanism will generally depend upon the tool.
 
 ### Deployed Services
-Central CloudTrail and Config buckets are deployed in this account as well as central SNS topics for each service. The CloudTrail implementation can be found [here](), the Config implementation is [here]().
+Central CloudTrail and Config buckets are deployed in this account as well as central SNS topics for each service. The CloudTrail implementation can be found [here](https://github.com/martinpbarber/aws-cloudtrail), the Config implementation is [here](https://github.com/martinpbarber/aws-config).
 
 ## Management Account
 TBD
